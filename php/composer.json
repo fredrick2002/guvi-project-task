@@ -1,5 +1,11 @@
 {
     "name": "fredy/php",
+    "authors": [
+        {
+            "name": "fredrick2002",
+            "email": "fredricksolomon2002@gmail.com"
+        }
+    ],
     "require": {
         "mongodb/mongodb": "^1.17"
     }

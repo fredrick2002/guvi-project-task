@@ -10,12 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $firstName = $_POST['first_name'];
     $lastName = $_POST['last_name'];
     $email = $_POST['email'];
+    $password = $_POST['password'];
     $dob = $_POST['dob'];
     $phone = $_POST['phone'];
-    $streetName = $_POST['street_name'];
-    $city = $_POST['city'];
-    $state = $_POST['state'];
-    $pincode = $_POST['pincode'];
 
     // Connect to MongoDB
     $client = new Client("mongodb://localhost:27017");
@@ -26,12 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'first_name' => $firstName,
         'last_name' => $lastName,
         'email' => $email,
+        'password' => $password,
         'dob' => $dob,
         'phone' => $phone,
-        'street_name' => $streetName,
-        'city' => $city,
-        'state' => $state,
-        'pincode' => $pincode
     ];
 
     // Insert data into MongoDB
