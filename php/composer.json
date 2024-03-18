@@ -1,0 +1,6 @@
+{
+    "name": "fredy/php",
+    "require": {
+        "mongodb/mongodb": "^1.17"
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 // Include MongoDB extension
-// require 'vendor/autoload.php'; // Adjust the path as necessary
+require 'vendor/autoload.php'; // Adjust the path as necessary
 
 use MongoDB\Client;
 
