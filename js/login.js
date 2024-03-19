@@ -16,12 +16,13 @@ $(document).ready(function(){
             },
             success: function(response){
                 // Handle successful login response
-                console.log(response); // You can log or display the response
-                if (response.status.trim() === "Login successful!") {
+                var jsonResponse = JSON.parse(response);
+                if (jsonResponse.status && jsonResponse.status.trim() === "success") {
                     // Redirect to profile.html if login is successful
-                    var objectId = response.objectId;
+                    var objectId = jsonResponse.objectId;
                     localStorage.setItem('objectId', objectId);
                     window.location.href = "profile.html";
+                    console.log("hi");
                 } else {
                     // Handle unsuccessful login
                     alert("Invalid email or password!");

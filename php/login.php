@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Retrieve ObjectId from MongoDB document
                 $objectId = (string) $mongoDocument['_id'];
                 // Output success message along with ObjectId
-                echo json_encode(['status' => 'Login successful!', 'objectId' => $objectId]);
+                echo json_encode(['status' => 'success', 'objectId' => $objectId]);
             } else {
                 // User not found in MongoDB
                 echo "User not found in MongoDB!";
