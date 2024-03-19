@@ -1,6 +1,7 @@
 <?php
 // Include MongoDB extension
-require 'vendor/autoload.php'; // Adjust the path as necessary
+require '../assets/vendor/autoload.php';
+require '../assets/sqlConfig.php';
 
 use MongoDB\Client;
 
@@ -41,15 +42,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $collection->insertOne($data);
 
     // Connect to MySQL
-    $mysqli = new mysqli("localhost", "root", "", "guvi_login");
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
     // Check connection
-    if ($mysqli->connect_error) {
-        die("Connection failed: " . $mysqli->connect_error);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
     }
 
     // Prepare and bind SQL statement
-    $stmt = $mysqli->prepare("INSERT INTO user_login (email, password) VALUES (?, ?)");
+    $stmt = $conn->prepare("INSERT INTO user_login (email, password) VALUES (?, ?)");
     $stmt->bind_param("ss", $email, $password);
 
     // Execute SQL statement
@@ -59,11 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->close();
 
     // Close MySQL connection
-    $mysqli->close();
+    $conn->close();
 
     // Check if insert into MongoDB was successful
     if ($result->getInsertedCount() == 1) {
         echo "Data inserted successfully";
+        
     } else {
         echo "Failed to insert data";
     }

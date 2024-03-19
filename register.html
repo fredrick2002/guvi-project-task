@@ -13,6 +13,7 @@
     <form id="myForm" method="post" action="">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email">
+        <div id="email-error" style="color: red;"></div>
         <br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password">
@@ -53,9 +54,11 @@
         <input type="submit" value="Submit">
     </form>
 
-    <!-- Include your custom JavaScript for form validation and AJAX submission here -->
+    <!-- AJAX submission-->
     <script src="./js/register.js"></script>
+    <!-- Form validation -->
+    <script src="./assets/validation.js"></script>
     <!--Age Calculation-->
-    <script src="./js/ageCalculate.js"></script>
+    <script src="./assets/ageCalculate.js"></script>
 </body>
 </html>
