@@ -9,20 +9,28 @@ $(document).ready(function() {
        },
        dob: {
          required: true,
-         date: true // Assuming you're using a date input for date of birth
+         date: true
        },
        phone: {
          required: true,
-         digits: true, // Assuming phone number is numeric
-         minlength: 10, // Minimum length for a phone number
-         maxlength: 15 // Maximum length for a phone number
+         digits: true,
+         minlength: 10,
+         maxlength: 15
        },
        password: {
          required: true,
-         minlength: 8, // Minimum length for password
-         // Adding a regex for password complexity
-         regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/,
-       }
+         minlength: 8,
+       },
+       street_name: "required",
+       city: "required",
+       state: "required",
+       pincode: {
+         required: true,
+         digits: true,
+         minlength: 6,
+         maxlength: 6
+       },
+       gender: "required"
      },
      messages: {
        first_name: "Please enter your first name",
@@ -43,17 +51,26 @@ $(document).ready(function() {
        },
        password: {
          required: "Please enter a password",
-         minlength: "Your password must be at least 8 characters long",
-         regex: "Your password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character."
-       }
+         minlength: "Your password must be at least 8 characters long"
+       },
+       street_name: "Please enter your street name",
+       city: "Please enter your city",
+       state: "Please enter your state",
+       pincode: {
+         required: "Please enter your pincode",
+         digits: "Please enter a valid pincode",
+         minlength: "Your pincode must be 6 digits",
+         maxlength: "Your pincode must be 6 digits"
+       },
+       gender: "Please select your gender"
      },
      submitHandler: function(form) {
        // Prevent form submission
        event.preventDefault();
- 
+
        // Prepare form data
        var formData = $(form).serialize();
- 
+
        // Send AJAX request
        $.ajax({
          type: 'POST',

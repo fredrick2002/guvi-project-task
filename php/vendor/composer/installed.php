@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'fredy/php',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '7535edf9ef09488f111a3037ff90b49a702187a8',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '414f9a68ce5dcf82daed220eaac7a200eb00c295',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'fredy/php' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '7535edf9ef09488f111a3037ff90b49a702187a8',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '414f9a68ce5dcf82daed220eaac7a200eb00c295',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
