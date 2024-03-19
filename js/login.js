@@ -22,7 +22,7 @@ $(document).ready(function(){
                     var objectId = jsonResponse.objectId;
                     localStorage.setItem('objectId', objectId);
                     window.location.href = "profile.html";
-                    console.log("hi");
+                    // console.log("hi");
                 } else {
                     // Handle unsuccessful login
                     alert("Invalid email or password!");

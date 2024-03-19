@@ -3,12 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+        <!-- Include jQuery library -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Profile</title>
 </head>
 <body>
-    <script>
-        var itemValue = localStorage.getItem('objectId');
-        console.log(itemValue);
-    </script>
+    <h1>User Profile</h1>
+    <button id="logoutButton">Logout</button>
+    <div>
+        <p>First Name: <span id="first_name"></span></p>
+        <p>Last Name: <span id="last_name"></span></p>
+        <p>Email: <span id="email"></span></p>
+        <p>dob: <span id="dob"></span></p>
+        <p>Gender: <span id="gender"></span></p>
+        <p>phone: <span id="phone"></span></p>
+        <p>Street Name: <span id="street_name"></span></p>
+        <p>City: <span id="city"></span></p>
+        <p>State: <span id="state"></span></p>
+        <p>Pin-Code: <span id="pincode"></span></p>
+        
+    </div>
+
+    <!-- Include your custom JavaScript file -->
+    <script src="./js/profile.js"></script>
 </body>
 </html>

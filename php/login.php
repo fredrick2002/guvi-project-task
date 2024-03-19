@@ -5,11 +5,14 @@ require '../assets/sqlConfig.php';
 require '../assets/vendor/autoload.php';
 
 use MongoDB\Client;
+use Predis\Client as RedisClient;
 
 // MongoDB connection parameters
 $mongoClient = new Client("mongodb://localhost:27017");
 $mongoDatabase = $mongoClient->selectDatabase('Guvi');
 $mongoCollection = $mongoDatabase->selectCollection('Guvi_Users');
+
+$redis = new RedisClient();
 
 // Check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -48,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $objectId = (string) $mongoDocument['_id'];
                 // Output success message along with ObjectId
                 echo json_encode(['status' => 'success', 'objectId' => $objectId]);
+                $redis->set($objectId, json_encode($mongoDocument));
             } else {
                 // User not found in MongoDB
                 echo "User not found in MongoDB!";
