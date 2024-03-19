@@ -54,15 +54,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $redis->set($objectId, json_encode($mongoDocument));
             } else {
                 // User not found in MongoDB
-                echo "User not found in MongoDB!";
+                echo json_encode(['status' => 'User not found in MongoDB!']);
             }
         } else {
             // Authentication failed (password mismatch)
-            echo "Invalid email or password!";
+            echo json_encode(['status' => 'Invalid email or password!']);
         }
     } else {
         // User with the provided email not found in MySQL
-        echo "User not found!";
+        echo json_encode(['status' => 'User not found!']);
     }
 
     // Close statement and connection

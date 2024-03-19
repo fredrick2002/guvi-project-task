@@ -1,6 +1,23 @@
+
 $(document).ready(function() {
-    // Retrieve the ObjectId from localStorage
+    
     var objectId = localStorage.getItem("objectId");
+    var isLoggedIn = checkLoginStatus();
+    // If not logged in, display warning and redirect to login page
+    if (!isLoggedIn) {
+        alert("You need to log in to access your profile.");
+        window.location.href = "login.html"; // Change to your login page URL
+    }
+
+    // Function to check login status (replace with your actual login check logic)
+    function checkLoginStatus() {
+        if(objectId){
+            return true
+        }else{
+        return false;
+        } 
+    }
+
 
     // Check if the ObjectId is present
     if (objectId) {
@@ -12,16 +29,16 @@ $(document).ready(function() {
             var redisData = JSON.parse(response);
             // Do something with the data
             // For example, display it on the webpage
-            $("#first_name").text(redisData.first_name);
-            $("#last_name").text(redisData.last_name);
-            $("#email").text(redisData.email);
-            $("#dob").text(redisData.dob);
-            $("#gender").text(redisData.gender);
-            $("#phone").text(redisData.phone);
-            $("#street_name").text(redisData.street_name);
-            $("#city").text(redisData.city);
-            $("#state").text(redisData.state);
-            $("#pincode").text(redisData.pincode);
+            $("#first_name").val(redisData.first_name);
+            $("#last_name").val(redisData.last_name);
+            $("#email").val(redisData.email);
+            $("#dob").val(redisData.dob);
+            $("#gender").val(redisData.gender);
+            $("#phone").val(redisData.phone);
+            $("#street_name").val(redisData.street_name);
+            $("#city").val(redisData.city);
+            $("#state").val(redisData.state);
+            $("#pincode").val(redisData.pincode);
             
             
         }).fail(function(xhr, status, error) {

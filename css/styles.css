@@ -1,0 +1,9 @@
+.error {
+    color: red;
+    font-size: 14px;
+    /* Add any other styles you want for error messages */
+}
+.navbar-brand img {
+    max-width: 100px; /* Adjust according to your logo size */
+    height: auto;
+}

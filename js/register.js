@@ -17,8 +17,10 @@ $(document).ready(function() {
         success: function(response) {
            // Handle success (e.g., show a success message)
            console.log(response);
+           window.location.href="login.html"
         },
         error: function(jqXHR, textStatus, errorThrown) {
+         
            // Handle error (e.g., show an error message)
            console.error(textStatus, errorThrown);
         }
