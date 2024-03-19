@@ -10,19 +10,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $firstName = $_POST['first_name'];
     $lastName = $_POST['last_name'];
     $email = $_POST['email'];
+    $password = $_POST['password']; // New line to retrieve password
     $dob = $_POST['dob'];
     $phone = $_POST['phone'];
     $streetName = $_POST['street_name'];
     $city = $_POST['city'];
     $state = $_POST['state'];
     $pincode = $_POST['pincode'];
-    $gender = $_POST['gender']; // Add this line to retrieve gender
+    $gender = $_POST['gender'];
 
     // Connect to MongoDB
     $client = new Client("mongodb://localhost:27017");
     $collection = $client->selectCollection('Guvi', 'Guvi_Users');
 
-    // Prepare data to be inserted
+    // Prepare data to be inserted into MongoDB
     $data = [
         'first_name' => $firstName,
         'last_name' => $lastName,
@@ -33,13 +34,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'city' => $city,
         'state' => $state,
         'pincode' => $pincode,
-        'gender' => $gender // Include gender in the data array
+        'gender' => $gender
     ];
 
     // Insert data into MongoDB
     $result = $collection->insertOne($data);
 
-    // Check if insert was successful
+    // Connect to MySQL
+    $mysqli = new mysqli("localhost", "root", "", "guvi_login");
+
+    // Check connection
+    if ($mysqli->connect_error) {
+        die("Connection failed: " . $mysqli->connect_error);
+    }
+
+    // Prepare and bind SQL statement
+    $stmt = $mysqli->prepare("INSERT INTO user_login (email, password) VALUES (?, ?)");
+    $stmt->bind_param("ss", $email, $password);
+
+    // Execute SQL statement
+    $stmt->execute();
+
+    // Close prepared statement
+    $stmt->close();
+
+    // Close MySQL connection
+    $mysqli->close();
+
+    // Check if insert into MongoDB was successful
     if ($result->getInsertedCount() == 1) {
         echo "Data inserted successfully";
     } else {
