@@ -3,7 +3,7 @@ $(document).ready(function() {
     // If form is not valid, return
     if (!$(this).valid()) {
       return;
-      console.log("invalid")
+      // console.log("invalid")
     }
 
     // Prepare form data

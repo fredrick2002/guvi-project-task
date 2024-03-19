@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Include jQuery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Include jQuery Validation Plugin -->
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <title>Login</title>
 </head>
 <body>
-    <form action="./profile.html" method="post">
+    <form id="login" method="post">
         <label>Email</label>
         <input type="email" name="email" id="email"/>
         <label>Password</label>  
         <input type="password" name="pwd" id="pwd"/> 
    <br><br>
-        <input type="submit" id="login" value="Login"/>
+        <input type="submit" value="Login"/>
         <input type="reset" id="reset" value="Reset"/>
     </form>
+
+    <!-- AJAX submission-->
+    <script src="./js/login.js"></script>
 </body>
 </html>

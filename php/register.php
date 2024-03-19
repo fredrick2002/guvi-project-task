@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $firstName = $_POST['first_name'];
     $lastName = $_POST['last_name'];
     $email = $_POST['email'];
-    $password = $_POST['password']; // New line to retrieve password
+    $password = $_POST['password']; 
     $dob = $_POST['dob'];
     $phone = $_POST['phone'];
     $streetName = $_POST['street_name'];
