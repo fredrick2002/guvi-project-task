@@ -3,7 +3,7 @@
         'name' => 'fredy/php',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '597554164deee4cc9ac9b99774ec04e81ef358c4',
+        'reference' => '2d819344d33cc3f6e0e33cf3c5443e9ad7c75937',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'fredy/php' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '597554164deee4cc9ac9b99774ec04e81ef358c4',
+            'reference' => '2d819344d33cc3f6e0e33cf3c5443e9ad7c75937',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

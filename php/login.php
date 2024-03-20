@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $objectId = (string) $mongoDocument['_id'];
                 // Output success message along with ObjectId
                 echo json_encode(['status' => 'success', 'objectId' => $objectId]);
-                $redis->set($objectId, json_encode($mongoDocument));
+                $redis->set('user:'.$objectId, json_encode($mongoDocument));
             } else {
                 // User not found in MongoDB
                 echo json_encode(['status' => 'User not found in MongoDB!']);

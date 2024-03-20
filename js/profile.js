@@ -76,4 +76,46 @@ $(document).ready(function() {
         $("#logoutButton").click(function() {
             logout();
         });
+
+
+        $('#updateButton').click(function(event) {
+            // Get the updated values from the input fields
+            var dob = $('#dob').val();
+            var gender = $('#gender').val();
+            var phone = $('#phone').val();
+            var street_name = $('#street_name').val();
+            var city = $('#city').val();
+            var state = $('#state').val();
+            var pincode = $('#pincode').val();
+
+            event.preventDefault();
+    
+            // Send the updated values to the PHP script via AJAX
+            $.ajax({
+                url: './assets/update_profile.php',
+                method: 'POST',
+
+                data: {
+                    objectId: objectId,
+                    dob: dob,
+                    gender: gender,
+                    phone: phone,
+                    street_name: street_name,
+                    city: city,
+                    state: state,
+                    pincode: pincode
+                },
+                success: function(response) {
+                    // Handle success response
+                    console.log('Profile updated successfully');
+                    console.log(response);
+                    // Optionally, display a success message to the user
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error('Error updating profile:', error);
+                    // Optionally, display an error message to the user
+                }
+            });
+        });
 });

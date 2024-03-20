@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if the ObjectId is present
     if (!empty($objectId)) {
         // Retrieve data from Redis using the ObjectId as key
-        $redisData = $redis->get($objectId);
+        $redisData = $redis->get('user:'.$objectId);
 
         // Check if data exists in Redis
         if ($redisData !== null) {
