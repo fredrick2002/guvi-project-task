@@ -107,8 +107,9 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     // Handle success response
-                    console.log('Profile updated successfully');
-                    console.log(response);
+                    // console.log('Profile updated successfully');
+                    // console.log(response);
+                    alert("Updated Successfully")
                     // Optionally, display a success message to the user
                 },
                 error: function(xhr, status, error) {
