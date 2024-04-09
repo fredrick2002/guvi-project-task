@@ -51,7 +51,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["email"]) && isset($_GET[
                 $objectId = (string) $mongoDocument['_id'];
                 // Output success message along with ObjectId
                 echo json_encode(['status' => 'success', 'objectId' => $objectId]);
-                $redis->set('user:'.$objectId, json_encode($mongoDocument));
+                $hashKey = 'user:' . $objectId;
+                foreach ($mongoDocument as $field => $value) {
+                    // Use HSET command to set field in Redis hash
+                    $redis->hset($hashKey, $field, $value);
+                }
+        
             } else {
                 // User not found in MongoDB
                 echo json_encode(['status' => 'User not found in MongoDB!']);

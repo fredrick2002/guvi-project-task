@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'PATCH') {
 // Read the input from PATCH request
 $patchData = file_get_contents('php://input');
 $data = json_decode($patchData, true);
-echo $patchData;
+// echo $patchData;
 
 // Error handling for missing data
 if (!$data || empty($data['objectId'])) {
@@ -27,6 +27,17 @@ if (!$data || empty($data['objectId'])) {
 
 // Extract data from PATCH request
 $objectId = $data['objectId'];
+
+// Initialize Redis client
+$redis = new RedisClient();
+// echo $patchData;
+// Update Redis with modified data
+foreach ($data as $key => $value) {
+    if ($key !== 'objectId') {
+        $redis->hset('user:' . $objectId, $key, $value);
+        
+    }
+}
 
 // MongoDB connection parameters
 $mongoClient = new Client("mongodb://localhost:27017");
@@ -49,11 +60,7 @@ $updateResult = $collection->updateOne($filter, $updateQuery);
 
 // Handle update result
 if ($updateResult->getModifiedCount() > 0) {
-    // If any field was updated, update Redis as well
-    $redis = new RedisClient();
-    $userData = $collection->findOne(['_id' => new MongoDB\BSON\ObjectId($objectId)]);
-    $redis->set('user:' . $objectId, json_encode($userData));
-    
+    // Respond with success message
     echo json_encode(['message' => 'Profile updated successfully']);
 } else {
     // Handle potential scenarios for no update (e.g., document not found)

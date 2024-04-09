@@ -15,12 +15,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Check if the ObjectId is present
     if (!empty($objectId)) {
         // Retrieve data from Redis using the ObjectId as key
-        $redisData = $redis->get('user:'.$objectId);
+        $redisData = $redis->hgetall('user:'.$objectId);
 
         // Check if data exists in Redis
-        if ($redisData !== null) {
+        if (!empty($redisData)) {
             // Data found in Redis, output the details
-            echo $redisData;
+            // Convert the associative array to JSON format
+            $jsonData = json_encode($redisData);
+
+            // Check if JSON encoding was successful
+            if ($jsonData !== false) {
+                // Output the JSON data
+                echo $jsonData;
+            } else {
+                // Error in JSON encoding
+                echo "Error encoding data to JSON format!";
+            }
         } else {
             // Data not found in Redis
             echo "Data not found in Redis!";

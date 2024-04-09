@@ -140,7 +140,7 @@ function populateOriginalData() {
                 
                 alert("Updated Successfully");
                 populateOriginalData();
-                // console.log('Response:', modifiedData);
+                console.log('Response:', modifiedData);
             },
             error: function(xhr, status, error) {
                 // Handle error response
