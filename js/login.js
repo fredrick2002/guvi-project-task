@@ -8,7 +8,7 @@ $(document).ready(function(){
 
         // Post data to PHP script
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: './php/login.php', // Replace 'login.php' with your PHP script path
             data: {
                 email: email,

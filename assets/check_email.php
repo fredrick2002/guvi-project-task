@@ -2,9 +2,9 @@
 // Include configuration file
 require 'sqlConfig.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['email'])) {
-    // Get email from POST data
-    $email = $_POST['email'];
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['email'])) {
+    // Get email from GET parameters
+    $email = $_GET['email'];
 
     // Create connection
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['email'])) {
     if ($result->num_rows > 0) {
         // Email exists
         echo 'false';
-
     } else {
         // Email is available
         echo 'true';

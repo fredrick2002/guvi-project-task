@@ -9,7 +9,7 @@ $(document).ready(function () {
                 email: true,
                 remote: {
                     url: "./assets/check_email.php",
-                    type: "post",
+                    type: "get",
                     data: {
                         email: function () {
                             return $("#email").val();

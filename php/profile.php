@@ -7,10 +7,10 @@ use Predis\Client as RedisClient;
 // Redis connection parameters
 $redis = new RedisClient();
 
-// Check if the request method is POST
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve the ObjectId from localStorage
-    $objectId = $_POST["objectId"];
+// Check if the request method is GET
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    // Retrieve the ObjectId from the query parameters
+    $objectId = $_GET["objectId"];
 
     // Check if the ObjectId is present
     if (!empty($objectId)) {
@@ -30,8 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "ObjectId is empty or not provided!";
     }
 } else {
-    // If the request method is not POST, return an error
+    // If the request method is not GET, return an error
     http_response_code(405); // Method Not Allowed
-    echo "Only POST requests are allowed!";
+    echo "Only GET requests are allowed!";
 }
 ?>

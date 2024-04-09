@@ -14,11 +14,11 @@ $mongoCollection = $mongoDatabase->selectCollection('Guvi_Users');
 
 $redis = new RedisClient();
 
-// Check if the request method is POST
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve the email and password from the POST data
-    $email = $_POST["email"];
-    $password = $_POST["pwd"];
+// Check if the request method is GET
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["email"]) && isset($_GET["pwd"])) {
+    // Retrieve the email and password from the GET parameters
+    $email = $_GET["email"];
+    $password = $_GET["pwd"];
     
     // Database connection parameters
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -69,8 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
     $conn->close();
 } else {
-    // If the request method is not POST, return an error
-    http_response_code(405); // Method Not Allowed
-    echo "Only POST requests are allowed!";
+    // If the request method is not GET or if email and password are not provided, return an error
+    echo json_encode(['status' => 'Invalid request!']);
 }
 ?>

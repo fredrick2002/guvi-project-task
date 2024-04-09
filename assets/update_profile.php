@@ -1,69 +1,69 @@
 <?php
+
 // Assuming you have a separate file (e.g., config.php) for database credentials
 require '../assets/vendor/autoload.php';
 
 use MongoDB\Client;
 use Predis\Client as RedisClient;
 
-// Error handling for missing POST data
-if (empty($_POST['objectId']) || empty($_POST['dob']) || // Check for required fields
-    empty($_POST['gender']) || empty($_POST['phone']) || empty($_POST['street_name']) ||
-    empty($_POST['city']) || empty($_POST['state']) || empty($_POST['pincode'])) {
-  echo json_encode(['error' => 'Missing required data in POST request']);
-  exit;
+// Error handling for missing PATCH data
+if ($_SERVER['REQUEST_METHOD'] !== 'PATCH') {
+    http_response_code(405); // Method Not Allowed
+    echo json_encode(['error' => 'Only PATCH requests are allowed']);
+    exit;
 }
+
+// Read the input from PATCH request
+$patchData = file_get_contents('php://input');
+$data = json_decode($patchData, true);
+echo $patchData;
+
+// Error handling for missing data
+if (!$data || empty($data['objectId'])) {
+    http_response_code(400); // Bad Request
+    echo json_encode(['error' => 'Missing required data in PATCH request']);
+    exit;
+}
+
+// Extract data from PATCH request
+$objectId = $data['objectId'];
 
 // MongoDB connection parameters
 $mongoClient = new Client("mongodb://localhost:27017");
 $mongoDatabase = $mongoClient->selectDatabase('Guvi');
-// $mongoCollection = $mongoDatabase->selectCollection('Guvi_Users');
+$collection = $mongoDatabase->selectCollection('Guvi_Users'); // Assuming collection name is 'Guvi_Users'
 
-// Extract data from POST request
-$objectId = $_POST['objectId'];
-$dob = $_POST['dob'];
-$gender = $_POST['gender'];
-$phone = $_POST['phone'];
-$streetName = $_POST['street_name'];
-$city = $_POST['city'];
-$state = $_POST['state'];
-$pincode = $_POST['pincode'];
+// Build update query
+$updateQuery = ['$set' => []];
 
-$redis = new RedisClient();
+// Check if other fields are provided in PATCH request and add them to update query
+foreach ($data as $key => $value) {
+    if ($key !== 'objectId') {
+        $updateQuery['$set'][$key] = $value;
+    }
+}
 
-// Update MongoDB (asynchronously)
-$collection = $mongoDatabase->selectCollection('Guvi_Users');  // Assuming collection name is 'users' (lowercase)
+// Update MongoDB
 $filter = ['_id' => new MongoDB\BSON\ObjectId($objectId)];
-$update = [
-    '$set' => [
-        'dob' => $dob,
-        'gender' => $gender,
-        'phone' => $phone,
-        'street_name' => $streetName,
-        'city' => $city,
-        'state' => $state,
-        'pincode' => $pincode
-    ]
-];
-$updateResult = $collection->updateOne($filter, $update);
+$updateResult = $collection->updateOne($filter, $updateQuery);
 
+// Handle update result
 if ($updateResult->getModifiedCount() > 0) {
-    $userData = [
-        'dob' => $dob,
-        'gender' => $gender,
-        'phone' => $phone,
-        'street_name' => $streetName,
-        'city' => $city,
-        'state' => $state,
-        'pincode' => $pincode
-    ];
+    // If any field was updated, update Redis as well
+    $redis = new RedisClient();
+    $userData = $collection->findOne(['_id' => new MongoDB\BSON\ObjectId($objectId)]);
     $redis->set('user:' . $objectId, json_encode($userData));
-
+    
+    echo json_encode(['message' => 'Profile updated successfully']);
 } else {
     // Handle potential scenarios for no update (e.g., document not found)
     if ($updateResult->getUpsertedId()) {
-        echo json_encode(['message' => 'No document matched the filter. Inserted a new document.']);
+        http_response_code(404); // Not Found
+        echo json_encode(['error' => 'No document matched the filter. Inserted a new document.']);
     } else {
+        http_response_code(500); // Internal Server Error
         echo json_encode(['error' => 'Failed to update user data in MongoDB']);
     }
 }
+
 ?>

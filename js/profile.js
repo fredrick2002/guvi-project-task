@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     
     var objectId = localStorage.getItem("objectId");
@@ -12,17 +11,16 @@ $(document).ready(function() {
     // Function to check login status (replace with your actual login check logic)
     function checkLoginStatus() {
         if(objectId){
-            return true
-        }else{
-        return false;
+            return true;
+        } else {
+            return false;
         } 
     }
 
-
     // Check if the ObjectId is present
     if (objectId) {
-        // Send a POST request to your PHP script
-        $.post("./php/profile.php", { objectId: objectId }, function(response) {
+        // Send a GET request to your PHP script
+        $.get("./php/profile.php", { objectId: objectId }, function(response) {
             // Handle the response from the server
             console.log(response);
             // You can parse the response JSON if needed
@@ -40,7 +38,6 @@ $(document).ready(function() {
             $("#state").val(redisData.state);
             $("#pincode").val(redisData.pincode);
             
-            
         }).fail(function(xhr, status, error) {
             // Handle any errors that occur during the AJAX request
             console.error("Error:", error);
@@ -48,75 +45,109 @@ $(document).ready(function() {
     } else {
         console.log("ObjectId is empty or not available in localStorage.");
     }
+    
     function clearLocalStorage() {
         localStorage.clear();
     }
     
-        // Function to clear Redis storage
-        function clearRedisStorage() {
-            // Send a POST request to clear Redis storage
-            $.post("./assets/clear_redis.php",{ objectId: objectId }, function(response) {
+    // Function to clear Redis storage
+    function clearRedisStorage() {
+        // Send a DELETE request to clear Redis storage
+        $.ajax({
+            url: "./assets/clear_redis.php",
+            method: "DELETE",
+            data: { objectId: objectId },
+            success: function(response) {
                 console.log(response);
-            }).fail(function(xhr, status, error) {
+            },
+            error: function(xhr, status, error) {
                 console.error("Error:", error);
-            });
+            }
+        });
+    }
+    
+
+    // Function to handle logout
+    function logout() {
+        // Clear localStorage
+        clearLocalStorage();
+        // Clear Redis storage
+        clearRedisStorage();
+        // Redirect the user to the logout page or any other desired location
+        window.location.href = "index.html";
+    }
+
+    // Event listener for logout button click
+    $("#logoutButton").click(function() {
+        logout();
+    });
+
+    // Define a global variable to store original form data
+var originalData = {};
+populateOriginalData();
+
+// Function to populate originalData with current form values
+function populateOriginalData() {
+    originalData.first_name = $('#first_name').val();
+    originalData.last_name = $('#last_name').val();
+    originalData.email = $('#email').val();
+    originalData.dob = $('#dob').val();
+    originalData.gender = $('#gender').val();
+    originalData.phone = $('#phone').val();
+    originalData.street_name = $('#street_name').val();
+    originalData.city = $('#city').val();
+    originalData.state = $('#state').val();
+    originalData.pincode = $('#pincode').val();
+}
+    
+
+
+    $('#updateButton').click(function(event) {
+        event.preventDefault();
+    
+        // Initialize an empty object to store modified values
+        var modifiedData = {};
+    
+        // Function to compare original and current values
+        function compareAndAdd(fieldName, currentValue) {
+            if (originalData[fieldName] !== currentValue) {
+                modifiedData[fieldName] = currentValue;
+            }
         }
     
-        // Function to handle logout
-        function logout() {
-            // Clear localStorage
-            clearLocalStorage();
-            // Clear Redis storage
-            clearRedisStorage();
-            // Redirect the user to the logout page or any other desired location
-            window.location.href = "index.html";
-        }
+        // Compare each field with its original value and add to modifiedData if modified
+        compareAndAdd('first_name', $('#first_name').val());
+        compareAndAdd('last_name', $('#last_name').val());
+        compareAndAdd('email', $('#email').val());
+        compareAndAdd('dob', $('#dob').val());
+        compareAndAdd('gender', $('#gender').val());
+        compareAndAdd('phone', $('#phone').val());
+        compareAndAdd('street_name', $('#street_name').val());
+        compareAndAdd('city', $('#city').val());
+        compareAndAdd('state', $('#state').val());
+        compareAndAdd('pincode', $('#pincode').val());
+
+        modifiedData.objectId = objectId;
     
-        // Event listener for logout button click
-        $("#logoutButton").click(function() {
-            logout();
+        // Send the modified values to the PHP script via AJAX using PATCH method
+        $.ajax({
+            url: './assets/update_profile.php',
+            method: 'PATCH',
+            contentType: 'application/json',
+            data: JSON.stringify(modifiedData),
+            success: function(response) {
+                // Handle success response
+                
+                alert("Updated Successfully");
+                populateOriginalData();
+                // console.log('Response:', modifiedData);
+            },
+            error: function(xhr, status, error) {
+                // Handle error response
+                console.error('Error updating profile:', error);
+            }
         });
-
-
-        $('#updateButton').click(function(event) {
-            // Get the updated values from the input fields
-            var dob = $('#dob').val();
-            var gender = $('#gender').val();
-            var phone = $('#phone').val();
-            var street_name = $('#street_name').val();
-            var city = $('#city').val();
-            var state = $('#state').val();
-            var pincode = $('#pincode').val();
-
-            event.preventDefault();
+    });
     
-            // Send the updated values to the PHP script via AJAX
-            $.ajax({
-                url: './assets/update_profile.php',
-                method: 'POST',
-
-                data: {
-                    objectId: objectId,
-                    dob: dob,
-                    gender: gender,
-                    phone: phone,
-                    street_name: street_name,
-                    city: city,
-                    state: state,
-                    pincode: pincode
-                },
-                success: function(response) {
-                    // Handle success response
-                    // console.log('Profile updated successfully');
-                    // console.log(response);
-                    alert("Updated Successfully")
-                    // Optionally, display a success message to the user
-                },
-                error: function(xhr, status, error) {
-                    // Handle error response
-                    console.error('Error updating profile:', error);
-                    // Optionally, display an error message to the user
-                }
-            });
-        });
+    
 });
